@@ -1,0 +1,14 @@
+*.obj
+*.o
+*.lib
+*.dll
+*.exe
+*.log
+*.pdb
+*.ilk
+.vs/
+build/
+x64/
+Debug/
+Release/
+obj_sm64/
