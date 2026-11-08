@@ -21,15 +21,15 @@ A DLL intercepta o loop do jogo por trampolins com MinHook, processa os ticks da
 
 ```mermaid
 flowchart TD
-    subgraph PROCESS["eldenring.exe (Processo Alvo x86_64 PE)"]
-        Havok["Loop de Física de Personagem Havok"]
-        Render["Pipeline de Matriz de Render / Malha"]
+    subgraph PROCESS["eldenring.exe (Processo Alvo)"]
+        Havok["Loop de Física Havok"]
+        Render["Pipeline de Matrizes Render"]
     end
 
-    subgraph INJECTED_DLL["mario_physics.dll (Detour Shim)"]
-        MinHook["Interceptor por Trampolim MinHook"]
-        Bridge["Controlador da Ponte de Física SM64"]
-        SM64["Núcleo Descompilado libsm64 (Biblioteca C Estática)"]
+    subgraph INJECTED_DLL["mario_physics.dll (Hook)"]
+        MinHook["Trampolim MinHook"]
+        Bridge["Controlador de Física SM64"]
+        SM64["Biblioteca Estática libsm64"]
         
         MinHook <--> Havok
         MinHook --> Bridge
@@ -37,9 +37,9 @@ flowchart TD
         Bridge --> Render
     end
 
-    subgraph SCRIPTS["Pipeline de Refinamento & Diagnóstico"]
-        PyCapture["Inspetor de Memória e Quadros em Python"]
-        PyFreezeFix["Fix Diagnóstico de Congelamento de Tela"]
+    subgraph SCRIPTS["Pipeline de Diagnóstico"]
+        PyCapture["Inspetor de Memória Python"]
+        PyFreezeFix["Fixador de Travamentos"]
     end
 
     SCRIPTS -.-> PROCESS

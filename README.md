@@ -21,15 +21,15 @@ The DLL hook hijacks the game loop via MinHook trampoline detours, updates SM64 
 
 ```mermaid
 flowchart TD
-    subgraph PROCESS["eldenring.exe (Target x86_64 PE Process)"]
-        Havok["Havok Character Physics Loop"]
-        Render["Render / Mesh Matrix Pipeline"]
+    subgraph PROCESS["eldenring.exe (Target Process)"]
+        Havok["Havok Physics Loop"]
+        Render["Render Matrix Pipeline"]
     end
 
-    subgraph INJECTED_DLL["mario_physics.dll (Detour Shim)"]
-        MinHook["MinHook Trampoline Interceptor"]
-        Bridge["SM64 Physics Bridge Controller"]
-        SM64["libsm64 Disassembled Core (Static C Library)"]
+    subgraph INJECTED_DLL["mario_physics.dll (Hook)"]
+        MinHook["MinHook Trampoline"]
+        Bridge["SM64 Physics Controller"]
+        SM64["libsm64 Core Library"]
         
         MinHook <--> Havok
         MinHook --> Bridge
@@ -37,9 +37,9 @@ flowchart TD
         Bridge --> Render
     end
 
-    subgraph SCRIPTS["Refinement & Diagnostic Pipeline"]
-        PyCapture["Python Real-Time Memory & Frame Inspector"]
-        PyFreezeFix["Loading Freeze Diagnostic Fixer"]
+    subgraph SCRIPTS["Diagnostic Pipeline"]
+        PyCapture["Python Memory Inspector"]
+        PyFreezeFix["Freeze Diagnostic Fixer"]
     end
 
     SCRIPTS -.-> PROCESS
